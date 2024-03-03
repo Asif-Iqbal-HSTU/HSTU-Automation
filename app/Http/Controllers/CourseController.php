@@ -15,6 +15,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Course;
 use App\Models\TeacherCourse;
+use App\Models\CourseObjective;
 
 class CourseController extends Controller
 {
@@ -72,7 +73,8 @@ class CourseController extends Controller
         //return redirect()->back()->with('success', 'Course created successfully!'); 
         //return redirect(RouteServiceProvider::WORKSPACE);
         //return Inertia::render('UserAdding/UserAddSuccess');
-        return redirect()->route('success');
+        //return redirect()->route('success');
+        return redirect()->back();
     }
 
     public function success(): Response
@@ -93,6 +95,22 @@ class CourseController extends Controller
         return Inertia::render('Course/CourseObjective',[
             'courseCode' => $courseCode,
         ]);
+    }
+
+    public function storeCourseObjective(Request $request, $courseCode)
+    {                
+        $courseObjective = CourseObjective::create([
+            'CourseCode' => $courseCode,
+            'CO_ID' => $request->CO_ID,
+            'CO_Description' => $request->CO_Description,
+        ]);
+        $courseObjectives = \App\Models\CourseObjective::where('CourseCode', $courseCode)->get();
+        
+        return Inertia::render('Course/CourseObjective',[
+            'courseCode' => $courseCode,
+            'courseObjectives' => $courseObjectives,
+        ]);
+        //return redirect()->back()->with('courseObjectives', $courseObjectives);
     }
     
 }

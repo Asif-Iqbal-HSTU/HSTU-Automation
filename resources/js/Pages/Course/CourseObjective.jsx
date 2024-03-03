@@ -10,8 +10,8 @@ import NumberInput from '@/Components/NumberInput';
 import TextArea from '@/Components/TextArea';
 
 export default function CourseObjective({ message, auth }) {
-    const { courseCode } = usePage().props;
-    console.log(message);
+    const { courseObjectives, courseCode } = usePage().props;
+    console.log(courseObjectives);
 
     const { data, setData, post, processing, errors, reset } = useForm({
         CourseCode: '',
@@ -21,7 +21,7 @@ export default function CourseObjective({ message, auth }) {
 
     const submit = (e) => {
         e.preventDefault();
-        post(route('course.store'));
+        post(route('set-syllabus-route.co', { courseCode: courseCode }));
     };
 
 
@@ -44,15 +44,15 @@ export default function CourseObjective({ message, auth }) {
                             <div className="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                                 <div className="p-6 text-gray-900 dark:text-gray-100">
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8 flex justify-center">
-                                        
-                                        <div>
-                                        <header>
-                                            <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Course Syllabus</h2>
 
-                                            <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
-                                                Add courses and syllabus from here.
-                                            </p>
-                                        </header>
+                                        <div>
+                                            <header>
+                                                <h2 className="text-lg font-medium text-gray-900 dark:text-gray-100">Course Syllabus</h2>
+
+                                                <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                                                    Add courses and syllabus from here.
+                                                </p>
+                                            </header>
                                             <form onSubmit={submit} className="mt-6 space-y-6">
                                                 <div>
                                                     <InputLabel htmlFor="CourseCode" value="Course Code" />
@@ -60,12 +60,12 @@ export default function CourseObjective({ message, auth }) {
                                                     <TextInput
                                                         id="CourseCode"
                                                         name="CourseCode"
-                                                        value={data.CourseCode}
+                                                        value={courseCode}
                                                         className="mt-1 block w-full"
                                                         autoComplete="CourseCode"
-                                                        isFocused={true}
                                                         onChange={(e) => setData('CourseCode', e.target.value)}
                                                         required
+                                                        disabled
                                                     />
 
                                                     <InputError message={errors.CourseCode} className="mt-2" />
@@ -83,13 +83,14 @@ export default function CourseObjective({ message, auth }) {
                                                         isFocused={true}
                                                         onChange={(e) => setData('CO_ID', e.target.value)}
                                                         required
+                                                        placeholder="Example: CO 1"
                                                     />
 
                                                     <InputError message={errors.CO_ID} className="mt-2" />
                                                 </div>
 
                                                 <div>
-                                                    <InputLabel htmlFor="CO_Description" value="Prerequisites" />
+                                                    <InputLabel htmlFor="CO_Description" value="Description" />
 
                                                     <TextArea
                                                         id="CO_Description"
@@ -112,7 +113,28 @@ export default function CourseObjective({ message, auth }) {
                                             </form>
                                         </div>
                                         <div>
-                                            <p>Hello</p>
+                                            <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+                                                <thead>
+                                                    <tr className="bg-gray-50 dark:bg-gray-800">
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">CO ID</th>
+                                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">CO Description</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody className="bg-white divide-y divide-gray-200 dark:divide-gray-700">
+                                                    {courseObjectives && courseObjectives.length > 0 ? (
+                                                        courseObjectives.map((objective, index) => (
+                                                            <tr key={index} className={index % 2 === 0 ? 'bg-gray-50 dark:bg-gray-800' : 'bg-white'}>
+                                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-400">{objective.CO_ID}</td>
+                                                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-400">{objective.CO_Description}</td>
+                                                            </tr>
+                                                        ))
+                                                    ) : (
+                                                        <tr>
+                                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-400" colSpan="2">No course objectives found.</td>
+                                                        </tr>
+                                                    )}
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>

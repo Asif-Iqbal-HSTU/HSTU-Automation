@@ -43,7 +43,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/success', [CourseController::class, 'success'])->name('success');
 
     Route::get('/set-syllabus/{courseCode}', [CourseController::class, 'setSyllabus'])->name('set-syllabus-route');
-    Route::get('/set-syllabus/co/{courseCode}', [CourseController::class, 'setSyllabus'])->name('set-syllabus-route.co');
+    Route::post('/set-syllabus/co/{courseCode}', [CourseController::class, 'storeCourseObjective'])->name('set-syllabus-route.co');
     Route::get('/set-syllabus/clo/{courseCode}', [CourseController::class, 'setSyllabus'])->name('set-syllabus-route.clo');
 
 });

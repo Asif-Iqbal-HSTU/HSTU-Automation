@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('course_objectives', function (Blueprint $table) {
             $table->id();
             $table->string('CourseCode');  
-            $table->text('CourseTitle');
-            $table->string('Faculty');        
+            $table->string('CO_ID');
+            $table->text('CO_Description');        
             $table->timestamps();
         });
     }
