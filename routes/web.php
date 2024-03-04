@@ -42,8 +42,17 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/success', [CourseController::class, 'success'])->name('success');
 
-    Route::get('/set-syllabus/{courseCode}', [CourseController::class, 'setSyllabus'])->name('set-syllabus-route');
+    Route::get('/courseView/{courseCode}', [CourseController::class, 'courseView'])->name('courseView');
+
+    Route::get('/set-syllabus/{courseCode}', [CourseController::class, 'setSyllabus'])->name('courseObjectiveView');
     Route::post('/set-syllabus/co/{courseCode}', [CourseController::class, 'storeCourseObjective'])->name('set-syllabus-route.co');
+
+    Route::get('/clo/{courseCode}', [CourseController::class, 'CLOPage'])->name('CLOView');
+    Route::post('/clo/upload/{courseCode}', [CourseController::class, 'storeCourseLearningOutcome'])->name('store.clo');
+
+    Route::get('/plo_vs_clo/{courseCode}', [CourseController::class, 'PLOvsCLOPage'])->name('PLOvsCLOView');
+    Route::post('/plovsclo/upload/{courseCode}', [CourseController::class, 'storePLOvsCLO'])->name('store.plovsclo');
+
     Route::get('/set-syllabus/clo/{courseCode}', [CourseController::class, 'setSyllabus'])->name('set-syllabus-route.clo');
 
 });

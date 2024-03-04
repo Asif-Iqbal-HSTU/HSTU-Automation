@@ -16,6 +16,7 @@ use Inertia\Response;
 use App\Models\Course;
 use App\Models\TeacherCourse;
 use App\Models\CourseObjective;
+use App\Models\CourseLearningOutcome;
 
 class CourseController extends Controller
 {
@@ -88,12 +89,24 @@ class CourseController extends Controller
         ]);
     }
 
+    public function courseView($courseCode): Response {
+        $course = \App\Models\Course::where('CourseCode', $courseCode)->first();
+        $courseTitle = $course->CourseTitle;
+        return Inertia::render('Course/CourseView',[
+            'courseCode' => $courseCode,
+            'courseTitle' => $courseTitle, // Pass the courseTitle to the frontend
+            'course' => $course,
+        ]);
+    }
+
     public function setSyllabus($courseCode): Response {
         // Use $courseCode to perform actions, such as fetching data from the database or any other processing
         // Return a response or render a view as needed
         //dd($courseCode);
+        $courseObjectives = \App\Models\CourseObjective::where('CourseCode', $courseCode)->get();
         return Inertia::render('Course/CourseObjective',[
             'courseCode' => $courseCode,
+            'courseObjectives' => $courseObjectives,
         ]);
     }
 
@@ -109,6 +122,74 @@ class CourseController extends Controller
         return Inertia::render('Course/CourseObjective',[
             'courseCode' => $courseCode,
             'courseObjectives' => $courseObjectives,
+        ]);
+        //return redirect()->back()->with('courseObjectives', $courseObjectives);
+    }
+
+    public function CLOPage($courseCode): Response {
+        // Use $courseCode to perform actions, such as fetching data from the database or any other processing
+        // Return a response or render a view as needed
+        //dd($courseCode);
+        $courseLearningOutcomes = \App\Models\CourseLearningOutcome::where('CourseCode', $courseCode)->get();
+        return Inertia::render('Course/CourseLearningOutcome',[
+            'courseCode' => $courseCode,
+            'courseLearningOutcomes' => $courseLearningOutcomes,
+        ]);
+    }
+
+    public function storeCourseLearningOutcome(Request $request, $courseCode)
+    {                
+        $courseLearningOutcome = CourseLearningOutcome::create([
+            'CourseCode' => $courseCode,
+            'CLO_ID' => $request->CLO_ID,
+            'CLO_Description' => $request->CLO_Description,
+        ]);
+        $courseLearningOutcomes = \App\Models\CourseLearningOutcome::where('CourseCode', $courseCode)->get();
+        
+        return Inertia::render('Course/CourseLearningOutcome',[
+            'courseCode' => $courseCode,
+            'courseLearningOutcomes' => $courseLearningOutcomes,
+        ]);
+        //return redirect()->back()->with('courseObjectives', $courseObjectives);
+    }
+
+    public function PLOvsCLOPage($courseCode): Response {
+        // Use $courseCode to perform actions, such as fetching data from the database or any other processing
+        // Return a response or render a view as needed
+        //dd($courseCode);
+        
+        $courseLearningOutcomes = \App\Models\CourseLearningOutcome::where('CourseCode', $courseCode)->get();
+        
+        $programLearningOutcomes = \App\Models\ProgramLearningOutcome::all();
+        
+        $PLOvsCLOs = \App\Models\PLOvsCLO::where('CourseCode', $courseCode)->get();
+        return Inertia::render('Course/PLOvsCLO',[
+            'courseCode' => $courseCode,
+            'courseLearningOutcomes' => $courseLearningOutcomes,
+            'programLearningOutcomes' => $programLearningOutcomes,
+            
+            'PLOvsCLOs' => $PLOvsCLOs,
+        ]);
+    }
+
+    public function storePLOvsCLO(Request $request, $courseCode)
+    {                
+        $PLOvsCLO = \App\Models\PLOvsCLO::create([            
+            'CourseCode' => $courseCode,
+            'CLO_ID' => $request->CLO_ID,
+            'PLO_No' => $request->PLO_No,
+        ]);
+        $PLOvsCLOs = \App\Models\PLOvsCLO::where('CourseCode', $courseCode)->get();
+        $courseLearningOutcomes = \App\Models\CourseLearningOutcome::where('CourseCode', $courseCode)->get();
+        
+        $programLearningOutcomes = \App\Models\ProgramLearningOutcome::all();
+        //dd($PLOvsCLOs);
+        
+        return Inertia::render('Course/PLOvsCLO',[
+            'courseCode' => $courseCode,
+            'courseLearningOutcomes' => $courseLearningOutcomes,
+            'programLearningOutcomes' => $programLearningOutcomes,
+            'PLOvsCLOs' => $PLOvsCLOs,
         ]);
         //return redirect()->back()->with('courseObjectives', $courseObjectives);
     }

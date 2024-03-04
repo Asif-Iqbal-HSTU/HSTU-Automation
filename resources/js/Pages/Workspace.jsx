@@ -61,8 +61,8 @@ export default function Workspace({ message, auth }) {
                                                     courses.map(course => (
                                                         <li key={course.CourseCode} className="py-3 flex items-center justify-between">
                                                             <span className="text-gray-600 dark:text-gray-400">{course.CourseCode}</span>
-                                                            <Link href={route('set-syllabus-route', { courseCode: course.CourseCode })}>
-                                                                <button className="text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-600">Set OBE Syllabus</button>
+                                                            <Link href={route('courseView', { courseCode: course.CourseCode })}>
+                                                                <button className="text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-600">View Course</button>
                                                             </Link>
                                                         </li>
                                                     ))
