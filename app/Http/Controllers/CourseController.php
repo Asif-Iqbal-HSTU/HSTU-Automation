@@ -193,5 +193,32 @@ class CourseController extends Controller
         ]);
         //return redirect()->back()->with('courseObjectives', $courseObjectives);
     }
+
+    public function CourseContent(): Response
+    {
+        //$departments = Department::all();
+        //$faculties = Faculty::all();
+        //$courseCode = \Illuminate\Support\Facades\Session::get('CourseCode');
+        //dd($courseCode);
+        return Inertia::render('Course/CourseContent');
+    }
     
+
+    public function storeCourseContent(Request $request)
+    {
+        $validatedData = $request->validate([
+            'content' => 'required|string',
+            'teaching_strategy' => 'nullable|string',
+            'assessment_strategy' => 'nullable|string',
+        ]);
+
+        // Create a new course content instance
+        $courseContent = \App\Models\CourseContent::create([
+            'content' => $validatedData['content'],
+            'teaching_strategy' => $validatedData['teaching_strategy'] ?? null,
+            'assessment_strategy' => $validatedData['assessment_strategy'] ?? null,
+        ]);
+
+        return redirect()->back()->with('success', 'Course content created successfully.');
+    }
 }

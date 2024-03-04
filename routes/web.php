@@ -53,6 +53,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/plo_vs_clo/{courseCode}', [CourseController::class, 'PLOvsCLOPage'])->name('PLOvsCLOView');
     Route::post('/plovsclo/upload/{courseCode}', [CourseController::class, 'storePLOvsCLO'])->name('store.plovsclo');
 
+    Route::get('/coursecontent', [CourseController::class, 'CourseContent'])->name('coursecontent');
+    Route::post('/coursecontent/upload/', [CourseController::class, 'storeCourseContent'])->name('coursecontent.upload');
+
     Route::get('/set-syllabus/clo/{courseCode}', [CourseController::class, 'setSyllabus'])->name('set-syllabus-route.clo');
 
 });

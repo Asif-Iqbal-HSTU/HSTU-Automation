@@ -60,8 +60,15 @@ export default function CourseView({ message, auth }) {
                                                         </Link>
                                                     </span>
                                                 </li>
+                                                <li className="py-3 flex items-center justify-between">
+                                                    <span className="text-gray-600 dark:text-gray-400">
+                                                        <Link href={route('coursecontent')}>
+                                                            <button className="text-green-500 hover:text-green-700 dark:text-green-400 dark:hover:text-green-600">Mapping/ Alignment PLO vs CLO</button>
+                                                        </Link>
+                                                    </span>
+                                                </li>
                                             </ul>
-
+                                            
                                         </div>
                                     </div>
                                 </div>
